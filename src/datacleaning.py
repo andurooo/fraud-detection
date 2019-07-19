@@ -13,6 +13,7 @@ class DataCleaner(object):
             X = DataCleaner(data_frame)
             X_vals = X.get_array_of_values()
         """
+        self.event_name = None
         self.single_df = data_frame
         self.total_vars = 0
         self.engineer_features()
@@ -43,6 +44,7 @@ class DataCleaner(object):
         self.set_rounded_ticket_averages()
         self.set_country_matching_event()
         self.set_bad_email_labels()
+        self.event_name = self.single_df["name"].values
         self.drop_extra_cols()
         self.single_df.fillna(0, inplace=True)
         
