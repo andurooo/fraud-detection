@@ -22,6 +22,7 @@ class DataCleaner(object):
         else:
             self.whole_df.append(self.single_df)
             self.total_vars += 1
+        self.X = self.single_df.values[0]
     
     def set_new_data_point(self, data_frame):
         self.single_df = data_frame
@@ -89,7 +90,3 @@ class DataCleaner(object):
                 "listed", "object_id", "sale_duration", "sale_duration2", "venue_address",
                 "venue_latitude", "venue_longitude", "venue_state", "description", "name", "org_desc",
                 "org_name"], axis=1, inplace=True)
-
-    def get_array_of_values(self):
-        self.X = self.single_df.values[0]
-        return self.X
