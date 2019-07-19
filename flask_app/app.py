@@ -42,7 +42,7 @@ def get_fraud():
     single_row = DataPoint().df
     cleaned_data = DataCleaner(single_row).X
     pred = Model(cleaned_data).predict()
-    return render_template('results.html', data=pred)
+    return render_template('results.html', data=(pred, cleaned_data)
 
 
 if __name__ == '__main__':
