@@ -1,27 +1,24 @@
-import pandas as pd 
-import numpy as np
-import matplotlib.pyplot as plt 
-import seaborn as sns 
+import pandas as pd
 import json, requests
 
 class DataPoint():
 
+    def __init__(self):
+        self.get_json()
+        self.get_df()
+    
     def get_json(self, URL="http://galvanize-case-study-on-fraud.herokuapp.com/data_point"):
 
-        self.name = name
         self.URL = URL 
         # URL  = "http://galvanize-case-study-on-fraud.herokuapp.com/data_point"
         PARAMS = {'address':location} 
 
-        r = requests.get(url = URL, params = PARAMS) 
+        r = requests.get(url = URL) 
         
-        json_data = json.loads(r.text)
-        print(len(json_data))
-        return json_data
+        self.json_data = json.loads(r.text)
 
-    def get_df(self, json_data):
 
-        df = pd.DataFrame([json_data])
+    def get_df(self):
 
-        return df
+        self.df = pd.DataFrame([self.json_data])
 
