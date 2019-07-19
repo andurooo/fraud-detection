@@ -14,7 +14,6 @@ class DataCleaner(object):
             X_vals = X.get_array_of_values()
         """
         self.single_df = data_frame
-        print("Length of single df: {}".format(len(self.single_df)))
         self.total_vars = 0
         self.engineer_features()
         if self.total_vars < 1:
@@ -32,23 +31,14 @@ class DataCleaner(object):
     def engineer_features(self):
         self.single_df.fillna({"has_analytics" : 0, "has_header" : 0, "has_logo" : 0, "delivery_method" : 0}, inplace=True)
         self.single_df["event_duration"] = self.single_df["event_end"] - self.single_df["event_start"]
-        print("Length of single df: {}".format(len(self.single_df)))
         self.single_df["event_turnover"] = self.single_df["event_published"] - self.single_df["event_created"]
-        print("Length of single df: {}".format(len(self.single_df)))
         self.single_df["user_turnover"] = self.single_df["event_created"] - self.single_df["user_created"]
-        print("Length of single df: {}".format(len(self.single_df)))
         self.single_df['has_something'] = self.single_df['has_analytics'] + self.single_df['has_header'] + self.single_df['has_logo']
-        print("Length of single df: {}".format(len(self.single_df)))
         self.single_df['num_ticket_types'] = [len(i) for i in self.single_df['ticket_types']]
-        print("Length of single df: {}".format(len(self.single_df)))
         self.single_df['num_prev_payouts'] = [len(i) for i in self.single_df['previous_payouts']]
-        print("Length of single df: {}".format(len(self.single_df)))
         self.single_df["payout_specified"] = [0 if method == '' else 1 for method in self.single_df["payout_type"]]
-        print("Length of single df: {}".format(len(self.single_df)))
         self.single_df["is_channel_0"] = [1 if channel == 0 else 0 for channel in self.single_df["channels"]]
-        print("Length of single df: {}".format(len(self.single_df)))
         self.single_df["is_delivery_0"] = [1 if method == 0 else 0 for method in self.single_df["delivery_method"]]
-        print("Length of single df: {}".format(len(self.single_df)))
         self.set_rounded_ticket_averages()
         self.set_country_matching_event()
         self.set_bad_email_labels()
@@ -66,7 +56,6 @@ class DataCleaner(object):
             averages.append(avg)
         self.rounded_averages = [round(i, 2) for i in averages] 
         self.single_df['average_ticket_price'] = self.rounded_averages
-        print("Length of single df: {}".format(len(self.single_df)))
 
     def set_country_matching_event(self):
         for i in range(len(self.single_df)):
@@ -79,8 +68,6 @@ class DataCleaner(object):
             if c_cond1 or c_cond2:
                 self.single_df.loc[i, "country"] = self.single_df.loc[i, "venue_country"]
         self.single_df["country_matching_event"] = self.single_df["country"] == self.single_df["venue_country"]
-        print("Length of single df: {}".format(len(self.single_df)))
-
 
     def set_bad_email_labels(self): 
         with open("bad_email_domains.p", 'rb') as f:
@@ -91,8 +78,6 @@ class DataCleaner(object):
             cond1 = self.single_df.loc[i, "email_domain"] in self.bad_emails
             if cond1:
                 self.single_df.loc[i, "bad_email"] = 1
-        print("Length of single df: {}".format(len(self.single_df)))
-
 
     def drop_extra_cols(self):
         self.single_df.drop(["org_facebook", "org_twitter", "channels", "venue_name", "email_domain",
@@ -104,8 +89,7 @@ class DataCleaner(object):
                 "listed", "object_id", "sale_duration", "sale_duration2", "venue_address",
                 "venue_latitude", "venue_longitude", "venue_state", "description", "name", "org_desc",
                 "org_name"], axis=1, inplace=True)
-        print("Length of single df (dropped): {}".format(len(self.single_df)))
 
     def get_array_of_values(self):
-        self.X = self.single_df.values
+        self.X = self.single_df.values[0]
         return self.X
