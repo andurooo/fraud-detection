@@ -11,7 +11,8 @@ class DataPoint():
 
         self.URL = URL 
         # URL  = "http://galvanize-case-study-on-fraud.herokuapp.com/data_point"
-        PARAMS = {'address':location} 
+        #location = "dehli technological university"
+        #PARAMS = {'address':location} 
 
         r = requests.get(url = URL) 
         
